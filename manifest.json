@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest.json",
+  "manifest_version": 3,
+  "version": "1.2025.1",
+  "name": "Breach Tab",
+  "description": "Simple New Tab, open the page to a simple window.",
+  "icons": {
+    "16": "images/extension_16.png",
+    "48": "images/extension_48.png",
+    "128": "images/extension_128.png",
+    "256": "images/extension_256.png"
+  },
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "images/extension_16.png",
+      "48": "images/extension_48.png",
+      "128": "images/extension_128.png",
+      "256": "images/extension_256.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background/index.ts"
+  },
+  "chrome_url_overrides": {
+    "newtab": "src/newtab/index.html"
+  },
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "author": "ONEO"
+}

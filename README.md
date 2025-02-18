@@ -6,6 +6,10 @@
 
 2. Open the current tab in a separate window
 
+## Preview
+
+![](img.jpg)
+
 ## Privacy
 
 - This program will not collect any user information

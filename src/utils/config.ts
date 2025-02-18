@@ -3,7 +3,12 @@ export class Config {
         const config = await chrome.storage.sync.get([key]);
         return config[key];
     }
+
     public static async Set(key: string, value: any): Promise<void> {
         await chrome.storage.sync.set({ [key]: value });
+    }
+
+    public static async Del(key: string): Promise<void> {
+        await chrome.storage.sync.remove(key);
     }
 }

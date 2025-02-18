@@ -1,10 +1,11 @@
 <script lang="ts">
+    import { Config } from "../../utils/config";
     import Icon from "./icon.svelte";
     class Item {
         width: number;
         height: number;
         header: string;
-        constructor(width: number, height: number, header: StringIterator) {
+        constructor(width: number, height: number, header: string) {
             this.width = width;
             this.height = height;
             this.header = header;
@@ -13,17 +14,22 @@
 
     const items: Item[] = [];
 
-    items.push(new Item(320, Math.ceil((320 / 9) * 16), "Phone"));
-    items.push(new Item(380, Math.ceil((380 / 9) * 16), "Phone Normal"));
-    items.push(new Item(420, Math.ceil((420 / 9) * 16), "Phone Max"));
     items.push(new Item(900, Math.ceil((900 / 4) * 3), "Desktop"));
-    items.push(new Item(1024, Math.ceil((1024 / 4) * 3), "Desktop Normal"));
+    items.push(new Item(1024, Math.ceil((1024 / 4) * 3), "Desktop Plus"));
     items.push(new Item(1366, Math.ceil((1366 / 4) * 3), "Desktop Max"));
+    items.push(new Item(320, Math.ceil((320 / 9) * 17), "Phone"));
+    items.push(new Item(380, Math.ceil((380 / 9) * 17), "Phone Plus"));
+    items.push(new Item(420, Math.ceil((420 / 9) * 17), "Phone Max"));
+
+    async function getCurrentTab(): Promise<chrome.tabs.Tab | undefined> {
+        const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (tabs === undefined || tabs.length <= 0) return undefined;
+        return tabs[0];
+    }
 
     async function openTab(width: number, height: number) {
-        const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (tabs === undefined || tabs.length <= 0) return;
-        const tab = tabs[0];
+        const tab = await getCurrentTab();
+        if (tab === undefined) return;
 
         chrome.windows.create({
             url: tab.url,
@@ -34,13 +40,29 @@
 
         window.close();
     }
+    async function setNewTabUrl(url: string | undefined) {
+        if (url == undefined) return;
+
+        var result = prompt("Set the following link as the default tab?", url);
+        if (result != null) {
+            Config.Set("saveUrl", result);
+        }
+
+        window.close();
+    }
+    async function setNewTab() {
+        const tab = await getCurrentTab();
+        if (tab === undefined) return;
+
+        setNewTabUrl(tab.url || tab.pendingUrl);
+    }
+
+    async function reset() {
+        setNewTabUrl("https://www.google.com/ncr");
+    }
 </script>
 
 <div id="root">
-    <div id="header">
-        <button>Reset</button>
-        <button class="right">Set as new tab</button>
-    </div>
     <div id="footer">
         {#each items as item}
             <button on:click={() => openTab(item.width, item.height)}>
@@ -54,6 +76,10 @@
             </button>
         {/each}
     </div>
+    <div id="header">
+        <button on:click={reset}>Reset</button>
+        <button on:click={setNewTab} class="right">Set as new tab</button>
+    </div>
 </div>
 
 <style>
@@ -65,7 +91,7 @@
         width: 170px;
     }
     #header {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
         display: flex;
         position: sticky;
         top: 0;

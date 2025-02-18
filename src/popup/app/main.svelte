@@ -24,12 +24,15 @@
         const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
         if (tabs === undefined || tabs.length <= 0) return;
         const tab = tabs[0];
+
         chrome.windows.create({
             url: tab.url,
             type: "popup",
             width: width,
             height: height,
         });
+
+        window.close();
     }
 </script>
 

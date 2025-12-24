@@ -1,25 +1,31 @@
 {
+  "name": "wxt-svelte-starter",
+  "description": "manifest.json description",
   "private": true,
-  "name": "breach-tab",
-  "description": "Simple New Tab, open the page to a simple window.",
-  "version": "1.2025.1",
-  "author": {
-    "name": "ONEO",
-    "email": "oneo.me@outlook.com",
-    "url": "https://oneo.me"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "svelte": "5.20.1"
+  "version": "1.2025.2",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "prepare": "svelte-check --tsconfig ./tsconfig.json",
+    "check": "bun run prepare && biome check --write",
+    "postinstall": "wxt prepare"
   },
   "devDependencies": {
-    "@tsconfig/svelte": "5.0.4",
-    "typescript": "5.7.3",
-    "extension": "latest"
-  },
-  "scripts": {
-    "dev": "extension dev",
-    "start": "extension start",
-    "build": "extension build"
+    "@biomejs/biome": "^2.3.10",
+    "@tailwindcss/vite": "^4.1.18",
+    "@tsconfig/svelte": "^5.0.6",
+    "@wxt-dev/auto-icons": "^1.1.0",
+    "@wxt-dev/module-svelte": "^2.0.4",
+    "svelte": "^5.46.1",
+    "svelte-check": "^4.3.5",
+    "tailwindcss": "^4.1.18",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3",
+    "wxt": "^0.20.13"
   }
 }

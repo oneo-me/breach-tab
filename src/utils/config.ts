@@ -1,14 +1,12 @@
-export class Config {
-    public static async Get(key: string): Promise<any> {
-        const config = await chrome.storage.sync.get([key]);
-        return config[key];
-    }
+export async function getConfig(key: string): Promise<string | undefined> {
+  const config = await browser.storage.sync.get([key]);
+  return config[key] as string;
+}
 
-    public static async Set(key: string, value: any): Promise<void> {
-        await chrome.storage.sync.set({ [key]: value });
-    }
+export async function setConfig(key: string, value: string): Promise<void> {
+  await browser.storage.sync.set({ [key]: value });
+}
 
-    public static async Del(key: string): Promise<void> {
-        await chrome.storage.sync.remove(key);
-    }
+export async function deleteConfig(key: string): Promise<void> {
+  await browser.storage.sync.remove(key);
 }
